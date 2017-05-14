@@ -10,7 +10,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import com.tools.auto.model.StagingTable;
+import com.tools.auto.model.TableDefinition;
 
 /**
 * Author: fulishang
@@ -20,13 +20,13 @@ import com.tools.auto.model.StagingTable;
 * Blog : https://lishang08.github.io/
 */
 
-public class FieldXmlGenerator implements XMLGenerator<StagingTable>{
+public class FieldXmlGenerator implements XMLGenerator<TableDefinition>{
 
-	public void buildXml(List<StagingTable> list) throws Exception {
+	public void buildXml(List<TableDefinition> list) throws Exception {
 		// TODO Auto-generated method stub
 		Element root = new Element("fields").setAttribute("id","XXX-BODY");
 		Document document = new Document(root);
-		for (StagingTable t : list) {
+		for (TableDefinition t : list) {
 			Element e = new Element("field").setAttribute("name",t.getPhysicalName());
 			e.addContent(new Element("fieldType").setText(t.getDataType()));
 			e.addContent(new Element("maxLength").setText(t.getMaxlength()));

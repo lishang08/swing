@@ -10,7 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import com.opencsv.CSVReader;
 import com.tools.auto.event.FieldXmlGenerator;
-import com.tools.auto.model.StagingTable;
+import com.tools.auto.model.TableDefinition;
+import com.tools.auto.utils.Constants;
 
 /**
 * Author: fulishang
@@ -25,7 +26,7 @@ public class FileServiceImpl implements FileService {
 	/** 引入Logger */
 	private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 	
-	public String loadFile(File file) {
+	public String loadFile(File file, String event) {
 		logger.info("Current processing file is " + file.getAbsolutePath());
 		String returnInfo = "";
 		String fileName = file.getName();
@@ -35,9 +36,16 @@ public class FileServiceImpl implements FileService {
 			//process csv format
 			if (suffix.equalsIgnoreCase("csv")) {
 				try {
-					List<StagingTable> records= this.readCSV(file);
-					FieldXmlGenerator xmlGenerator = new FieldXmlGenerator();
-					xmlGenerator.buildXml(records);
+					List<TableDefinition> definitions= this.readCSV(file);
+					if (event.equals(Constants.EVENT_GENERATE_XML)) {
+						FieldXmlGenerator xmlGenerator = new FieldXmlGenerator();
+						xmlGenerator.buildXml(definitions);
+					} else {
+						//generate ddl, to be developed 
+						
+					}
+
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -57,24 +65,24 @@ public class FileServiceImpl implements FileService {
 	 * @param file
 	 * @throws Exception
 	 */
-	public List<StagingTable> readCSV (File file) throws Exception {
+	public List<TableDefinition> readCSV (File file) throws Exception {
 		FileReader fileReader = new FileReader(file);
 		CSVReader csvReader = new CSVReader(fileReader);
-		List<StagingTable> records = new ArrayList<StagingTable>();
+		List<TableDefinition> definitions = new ArrayList<TableDefinition>();
 		List<String[]> list = csvReader.readAll(); 
 		for(String[] ss : list){  
-			StagingTable table = new StagingTable();
-			table.setLogicalName(ss[0].trim());
-			table.setOnboard(ss[1].trim());
-			table.setPhysicalName(ss[2].trim());
-			table.setDataType(ss[3].trim());
-			table.setNullable(ss[4].trim());
-			table.setPosition(ss[5].trim());
-			table.setDataLength(ss[6].trim());
-			table.setMaxlength(ss[7].trim());
-			table.setTableName(ss[8].trim());
+			TableDefinition definition = new TableDefinition();
+			definition.setLogicalName(ss[0].trim());
+			definition.setOnboard(ss[1].trim());
+			definition.setPhysicalName(ss[2].trim());
+			definition.setDataType(ss[3].trim());
+			definition.setNullable(ss[4].trim());
+			definition.setPosition(ss[5].trim());
+			definition.setDataLength(ss[6].trim());
+			definition.setMaxlength(ss[7].trim());
+			definition.setTableName(ss[8].trim());
 			
-			records.add(table);
+			definitions.add(definition);
 		}
 //		for (StagingTable t : records) {
 //			logger.info(t.getLogicalName());
@@ -88,7 +96,7 @@ public class FileServiceImpl implements FileService {
 //		}
 		
 		csvReader.close();
-		return records;
+		return definitions;
 	}
 
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fields id="XXX-BODY">
+  <field name="pyhiscalname">
+    <fieldType>datatype</fieldType>
+    <maxLength>maxlength</maxLength>
+    <sequence at="position" />
+  </field>
+  <field name="leger">
+    <fieldType>string</fieldType>
+    <maxLength>10</maxLength>
+    <sequence at="1" />
+  </field>
+  <field name="test">
+    <fieldType>string</fieldType>
+    <maxLength>100</maxLength>
+    <sequence at="1" />
+  </field>
+</fields>
+

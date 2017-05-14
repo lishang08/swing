@@ -12,5 +12,5 @@ import java.io.File;
 
 public interface FileService {
 
-	public String loadFile(File file);
+	public String loadFile(File file, String event);
 }

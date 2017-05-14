@@ -7,7 +7,7 @@ package com.tools.auto.model;
 * Blog : https://lishang08.github.io/
 */
 
-public class StagingTable {
+public class TableDefinition {
 
 	//column name which get from source
 	private String logicalName;

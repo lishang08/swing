@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.tools.auto.service.FileService;
+import com.tools.auto.utils.Constants;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-
 /**
 * Author: fulishang
 * Create Time  : 2017年5月14日,上午12:24:17
@@ -87,22 +87,38 @@ public class ProcessorGUI extends JFrame{
 			}
 		});
 		
-		JButton write2DB = new JButton("生成xml");
-		write2DB.setBounds(22, 70, 117, 29);
-		getContentPane().add(write2DB);
+		JButton generateXmlButton = new JButton("生成xml");
+		generateXmlButton.setBounds(22, 70, 117, 29);
+		getContentPane().add(generateXmlButton);
 		
 		infoLabel = new JLabel("");
 		infoLabel.setBounds(18, 158, 426, 54);
 		getContentPane().add(infoLabel);
-
-		write2DB.addActionListener(new ActionListener() {
+		
+		JButton btnddl = new JButton("生成DDL");
+		btnddl.setBounds(167, 70, 117, 29);
+		getContentPane().add(btnddl);
+		
+		generateXmlButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				logger.info("running here #1");
-				loadFile2DB(file);
+				if (textField.getText() == null || textField.getText().equals("")) {
+					repaintInfoLabel("Can not proceed with NULL input!!!");
+				} else {
+					generateXml(file);
+				}
 			}
 		});
 		
-		
+		btnddl.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textField.getText() == null || textField.getText().equals("")) {
+					repaintInfoLabel("Can not proceed with NULL input!!!");
+				} else {
+					generateXml(file);
+				}
+			}
+		});
+
 		this.setVisible(true);
 	}
 	
@@ -124,11 +140,21 @@ public class ProcessorGUI extends JFrame{
      * 写文件到数据库
      * @param file
      */
-    public void loadFile2DB(File file) {
+    public void generateXml(File file) {
     	fileService = (FileService) context.getBean("fileService");
-    	String info = fileService.loadFile(file);
-		infoLabel.setText(info);
-		infoLabel.setForeground(Color.RED);
-        infoLabel.repaint();
+    	String info = fileService.loadFile(file, Constants.EVENT_GENERATE_XML);
+		repaintInfoLabel(info);
+    }
+    
+    
+    
+    /**
+     * 刷新显示信息
+     * @param info
+     */
+    public void repaintInfoLabel(String info) {
+    	infoLabel.setText(info);
+    	infoLabel.setForeground(Color.RED);
+    	infoLabel.repaint();
     }
 }

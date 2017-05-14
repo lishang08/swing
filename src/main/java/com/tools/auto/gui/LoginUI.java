@@ -151,7 +151,7 @@ public class LoginUI{
 			//登录成功跳转页面
 			logger.info("Login successfully, move to Processor GUI");
 			this.frame.dispose();
-			new ProcessorGUI();
+			new ProcessorGUI(context);
 		}
 	}
 	

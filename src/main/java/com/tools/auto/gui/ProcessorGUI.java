@@ -2,6 +2,8 @@ package com.tools.auto.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,6 +12,9 @@ import javax.swing.JTextField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+import com.tools.auto.service.FileService;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -33,18 +38,26 @@ public class ProcessorGUI extends JFrame{
 	private Logger logger = LoggerFactory.getLogger(ProcessorGUI.class);
 	
 	private JTextField textField;
+	private JLabel infoLabel;
+	
+	private File file;
+	
+	private FileService fileService;
+	
+	private static ApplicationContext context;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		new ProcessorGUI();
+		new ProcessorGUI(context);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public ProcessorGUI() {
+	public ProcessorGUI(ApplicationContext context) {
+		ProcessorGUI.context = context;
 		initialize();
 	}
 
@@ -65,14 +78,31 @@ public class ProcessorGUI extends JFrame{
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("打开");
-		btnNewButton.setBounds(327, 14, 117, 29);
-		getContentPane().add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton open = new JButton("打开");
+		open.setBounds(327, 14, 117, 29);
+		getContentPane().add(open);
+		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				choose();
+				file = choose();
 			}
 		});
+		
+		JButton write2DB = new JButton("生成xml");
+		write2DB.setBounds(22, 70, 117, 29);
+		getContentPane().add(write2DB);
+		
+		infoLabel = new JLabel("");
+		infoLabel.setBounds(18, 158, 426, 54);
+		getContentPane().add(infoLabel);
+
+		write2DB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logger.info("running here #1");
+				loadFile2DB(file);
+			}
+		});
+		
+		
 		this.setVisible(true);
 	}
 	
@@ -84,9 +114,21 @@ public class ProcessorGUI extends JFrame{
         JFileChooser jfc=new JFileChooser();  
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );  
         jfc.showDialog(new JLabel(), "选择");  
-        File file=jfc.getSelectedFile();  
-        logger.info(file.getAbsolutePath());
-        textField.setText(file.getAbsolutePath());
-        return file;
+        File f=jfc.getSelectedFile();  
+        logger.info(f.getAbsolutePath());
+        textField.setText(f.getAbsolutePath());
+        return f;
+    }
+    
+    /**
+     * 写文件到数据库
+     * @param file
+     */
+    public void loadFile2DB(File file) {
+    	fileService = (FileService) context.getBean("fileService");
+    	String info = fileService.loadFile(file);
+		infoLabel.setText(info);
+		infoLabel.setForeground(Color.RED);
+        infoLabel.repaint();
     }
 }

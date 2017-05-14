@@ -54,4 +54,5 @@
     
     <bean id="userService" class="com.tools.auto.service.UserServiceImpl" />
     <bean id="userDao" class="com.tools.auto.dao.impl.UserDaoImpl" />
+    <bean id="fileService" class="com.tools.auto.service.FileServiceImpl" />
 </beans>

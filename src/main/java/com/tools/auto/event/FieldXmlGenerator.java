@@ -20,7 +20,7 @@ import com.tools.auto.model.TableDefinition;
 * Blog : https://lishang08.github.io/
 */
 
-public class FieldXmlGenerator implements XMLGenerator<TableDefinition>{
+public class FieldXmlGenerator implements DocumentGenerator<TableDefinition>{
 
 	public void buildXml(List<TableDefinition> list) throws Exception {
 		// TODO Auto-generated method stub
@@ -39,6 +39,11 @@ public class FieldXmlGenerator implements XMLGenerator<TableDefinition>{
 		if (!file.exists())
 			file.createNewFile();
 		xmlOutputter.output(document, new FileOutputStream(file));
+	}
+
+	public void buildDDL(List<TableDefinition> list) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 

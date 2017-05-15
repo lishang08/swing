@@ -11,5 +11,6 @@ public class Constants {
 
 	public static final String EVENT_GENERATE_XML = "EVENT_GENERATE_XML";
 	public static final String EVENT_GENERATE_DDL = "EVENT_GENERATE_DDL";
-	
+	public static final String PLACEHOLDER_TABLE_NAME = "PLACEHOLDER_TABLE_NAME";
+	public static final String PLACEHOLDER_FIELDS = "PLACEHOLDER_FIELDS";
 }

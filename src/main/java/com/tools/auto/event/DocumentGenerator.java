@@ -10,8 +10,11 @@ import java.util.List;
 * Blog : https://lishang08.github.io/
 */
 
-public interface XMLGenerator<T> {
+public interface DocumentGenerator<T> {
 
-	/** build xml document */
+	/** generate xml document */
 	public void buildXml(List<T> list) throws Exception;
+	
+	/** generate ddl document */
+	public void buildDDL(List<T> list) throws Exception;
 }

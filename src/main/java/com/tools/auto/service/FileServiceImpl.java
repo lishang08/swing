@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.opencsv.CSVReader;
+import com.tools.auto.event.DDLGenerator;
 import com.tools.auto.event.FieldXmlGenerator;
 import com.tools.auto.model.TableDefinition;
 import com.tools.auto.utils.Constants;
@@ -32,7 +33,6 @@ public class FileServiceImpl implements FileService {
 		String fileName = file.getName();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
 		if (suffix.equalsIgnoreCase("csv") || suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx")) {
-			returnInfo  = "File format is expected";
 			//process csv format
 			if (suffix.equalsIgnoreCase("csv")) {
 				try {
@@ -40,9 +40,12 @@ public class FileServiceImpl implements FileService {
 					if (event.equals(Constants.EVENT_GENERATE_XML)) {
 						FieldXmlGenerator xmlGenerator = new FieldXmlGenerator();
 						xmlGenerator.buildXml(definitions);
+						returnInfo = "Xml file generated successfully !!!";
 					} else {
-						//generate ddl, to be developed 
-						
+						//generate ddl
+						DDLGenerator ddlGenerator = new DDLGenerator();
+						ddlGenerator.buildDDL(definitions);
+						returnInfo = "DDL file generated successfully  !!!";
 					}
 
 

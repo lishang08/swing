@@ -114,7 +114,7 @@ public class ProcessorGUI extends JFrame{
 				if (textField.getText() == null || textField.getText().equals("")) {
 					repaintInfoLabel("Can not proceed with NULL input!!!");
 				} else {
-					generateXml(file);
+					generateDDL(file);
 				}
 			}
 		});
@@ -137,7 +137,7 @@ public class ProcessorGUI extends JFrame{
     }
     
     /**
-     * 写文件到数据库
+     *  生成xml
      * @param file
      */
     public void generateXml(File file) {
@@ -145,6 +145,17 @@ public class ProcessorGUI extends JFrame{
     	String info = fileService.loadFile(file, Constants.EVENT_GENERATE_XML);
 		repaintInfoLabel(info);
     }
+    
+    /**
+     * 生成ddl
+     * @param file
+     */
+    public void generateDDL(File file) {
+    	fileService = (FileService) context.getBean("fileService");
+    	String info = fileService.loadFile(file, Constants.EVENT_GENERATE_DDL);
+    	repaintInfoLabel(info);
+    }
+    
     
     
     
